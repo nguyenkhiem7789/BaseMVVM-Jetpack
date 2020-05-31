@@ -1,18 +1,21 @@
 package com.nguyen.tekotest.ui.view.listProduct
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nguyen.tekotest.R
+import com.nguyen.tekotest.TekoTestApplication
 import com.nguyen.tekotest.data.remote.request.ListProductRequest
 import com.nguyen.tekotest.data.remote.response.Product
+import com.nguyen.tekotest.ui.subview.loading.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_list_product.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
+
 
 class ListProductFragment: Fragment() {
 
@@ -44,6 +47,12 @@ class ListProductFragment: Fragment() {
         adapter = ListProductAdapter(arrayProduct)
         view.productRecyclerView.layoutManager = LinearLayoutManager(activity)
         view.productRecyclerView.adapter = adapter
+        view.productRecyclerView.addItemDecoration(
+            DividerItemDecoration(
+                activity,
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
 
     // request api get data list product
@@ -56,9 +65,11 @@ class ListProductFragment: Fragment() {
             currentPage,
             PAGE_SIZE
         )
+        LoadingDialog.getInstance(requireContext()).show()
         viewModel.getListProduct(request).observe(viewLifecycleOwner, Observer {
             this.arrayProduct.addAll(it)
             this.adapter.notifyDataSetChanged()
+            LoadingDialog.getInstance(requireContext()).dismiss()
         })
     }
 }

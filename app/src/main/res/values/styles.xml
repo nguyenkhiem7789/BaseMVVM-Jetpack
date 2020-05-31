@@ -14,4 +14,17 @@
         <item name="android:textColorHint">@android:color/darker_gray</item>
     </style>
 
+    <style name="SmoothProgressDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.SmoothProgressDialog</item>
+    </style>
+
+    <style name="Animation" />
+
+    <style name="Animation.SmoothProgressDialog">
+        <item name="android:windowEnterAnimation">@anim/anim_in_dialog</item>
+        <item name="android:windowExitAnimation">@anim/anim_out_dialog</item>
+    </style>
+
 </resources>
