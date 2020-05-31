@@ -1,8 +1,9 @@
 package com.nguyen.tekotest.data.repository
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.nguyen.tekotest.data.remote.network.ListProductService
-import com.nguyen.tekotest.data.remote.request.ProductListingRequest
+import com.nguyen.tekotest.data.remote.request.ListProductRequest
 import com.nguyen.tekotest.data.remote.response.Product
 import kotlinx.coroutines.*
 import retrofit2.HttpException
@@ -18,12 +19,11 @@ class ListProductRepository constructor(
     val completableJob = Job()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + completableJob)
 
-
-    fun getListProduct(request: ProductListingRequest) : MutableLiveData<ArrayList<Product>> {
+    fun getListProduct(request: ListProductRequest) : MutableLiveData<ArrayList<Product>> {
         isLoading = true
         coroutineScope.launch {
-            val request = listProductService.getListProduct(request.channel, request.visitorId, request.query,
-                request.terminal, request.page, request.limit)
+            val request = listProductService.getListProductAsync(request.channel,
+                request.visitorId, request.query, request.terminal, request.page, request.limit)
             withContext(Dispatchers.Main) {
                 try {
                     val response = request.await()
@@ -31,11 +31,13 @@ class ListProductRepository constructor(
                     if(products != null) {
                         arrayProduct = products
                         mutableLiveData.value = arrayProduct
+                    } else {
+                        Log.e("getListProduct ", "products null")
                     }
                 } catch (e: HttpException) {
-
+                    Log.e("getListProduct ", "${e.message}")
                 } catch (e: Throwable) {
-
+                    Log.e("getListProduct ", "${e.message}")
                 }
             }
         }

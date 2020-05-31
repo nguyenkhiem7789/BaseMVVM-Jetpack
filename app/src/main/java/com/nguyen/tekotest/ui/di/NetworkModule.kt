@@ -1,5 +1,6 @@
 package com.nguyen.tekotest.ui.di
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.nguyen.tekotest.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit
 private val sLogLevel =
     if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
 
-private const val baseUrl = "https://listing.stage.tekoapis.net/api/search/"
+private const val baseUrl = "https://listing.stage.tekoapis.net/api/"
 
 private fun getLogInterceptor() = HttpLoggingInterceptor().apply { level = sLogLevel }
 
@@ -27,6 +28,7 @@ private fun retrofitClient(baseUrl: String, httpClient: OkHttpClient): Retrofit 
         .baseUrl(baseUrl)
         .client(httpClient)
         .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
 
 fun headersInterceptor(addAuthHeader: Boolean) = Interceptor { chain ->

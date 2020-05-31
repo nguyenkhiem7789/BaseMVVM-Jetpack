@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TekoTest</string>
+    <string name="hint_search_view">Nhập tên, mã sản phẩm</string>
 </resources>

@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface ListProductService {
 
     @GET("search/")
-    fun getListProduct(
+    fun getListProductAsync(
         @Query("channel") channel: String?,
         @Query("visitorId") visitorId: String?,
         @Query("q") query: String?,

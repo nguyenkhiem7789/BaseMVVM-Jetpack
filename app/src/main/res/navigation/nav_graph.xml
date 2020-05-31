@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.nguyen.tekotest.ui.view.splash.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_listProductFragment"
+            app:destination="@id/listProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listProductFragment"
+        android:name="com.nguyen.tekotest.ui.view.listProduct.ListProductFragment"
+        android:label="ListProductFragment" >
+        <action
+            android:id="@+id/action_listProductFragment_to_detailProductFragment"
+            app:destination="@id/detailProductFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailProductFragment"
+        android:name="com.nguyen.tekotest.ui.view.detailProduct.DetailProductFragment"
+        android:label="DetailProductFragment" />
+</navigation>
