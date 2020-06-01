@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.nguyen.tekotest.R
 import com.nguyen.tekotest.data.remote.request.ListProductRequest
 import com.nguyen.tekotest.data.remote.response.Product
-import com.nguyen.tekotest.ui.subview.LoadingDialog
-import com.nguyen.tekotest.ui.subview.loading.Snackbar
+import com.nguyen.tekotest.ui.subview.LoadingView
+import com.nguyen.tekotest.ui.subview.loading.SnackbarView
 import kotlinx.android.synthetic.main.fragment_list_product.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -66,23 +66,23 @@ class ListProductFragment: Fragment() {
             currentPage,
             PAGE_SIZE
         )
-        LoadingDialog.getInstance(requireContext()).show()
+        LoadingView.getInstance(requireContext()).show()
         viewModel.getListProduct(request)
     }
 
     ///binding data
     private fun bindingData() {
         viewModel.response.observe(viewLifecycleOwner, Observer {
-            LoadingDialog.getInstance(requireContext()).dismiss()
+            LoadingView.getInstance(requireContext()).dismiss()
             val arrayProduct = it.result?.arrayProduct
             val message = it.errorMsg
             if(arrayProduct != null && arrayProduct.size > 0) {
                 this.arrayProduct.addAll(arrayProduct)
                 this.adapter.notifyDataSetChanged()
             } else if(message != null) {
-                Snackbar.show(view, message, false)
+                SnackbarView.show(view, message, false)
             } else {
-                Snackbar.show(view, getString(R.string.error_connect_network), false)
+                SnackbarView.show(view, getString(R.string.error_connect_network), false)
             }
         })
     }

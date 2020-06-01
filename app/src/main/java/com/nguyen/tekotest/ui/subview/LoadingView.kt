@@ -7,12 +7,12 @@ import androidx.annotation.NonNull
 import com.nguyen.tekotest.R
 import com.nguyen.tekotest.utils.SingletonHolder
 
-class LoadingDialog private constructor(context: Context){
+class LoadingView private constructor(context: Context){
 
     init {
     }
 
-    companion object : SingletonHolder<LoadingDialog, Context>(::LoadingDialog)
+    companion object : SingletonHolder<LoadingView, Context>(::LoadingView)
 
     private val progressDialog: ProgressDialog by lazy {
         ProgressDialog(context)

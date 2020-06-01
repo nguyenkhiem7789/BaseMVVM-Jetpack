@@ -6,7 +6,7 @@ import android.widget.TextView
 import com.androidadvance.topsnackbar.R
 import com.androidadvance.topsnackbar.TSnackbar
 
-object Snackbar {
+object SnackbarView {
 
     fun show(
         view: View?,
