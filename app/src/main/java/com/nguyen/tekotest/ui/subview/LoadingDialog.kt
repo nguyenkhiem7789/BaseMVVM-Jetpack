@@ -1,4 +1,4 @@
-package com.nguyen.tekotest.ui.subview.loading
+package com.nguyen.tekotest.ui.subview
 
 import android.app.Dialog
 import android.content.Context

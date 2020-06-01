@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TekoTest</string>
     <string name="hint_search_view">Nhập tên, mã sản phẩm</string>
+    <string name="error_connect_network">Kết nối máy chủ xảy ra lỗi.</string>
 </resources>

@@ -4,6 +4,7 @@ import com.nguyen.tekotest.data.remote.response.ListProductResponse
 import com.nguyen.tekotest.data.remote.response.Product
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -17,6 +18,6 @@ interface ListProductService {
         @Query("terminal") terminal: String?,
         @Query("_page") page: Int?,
         @Query("_limit") limit: Int?
-    ): Deferred<ListProductResponse>
+    ): Deferred<Response<ListProductResponse>>
 
 }

@@ -9,10 +9,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nguyen.tekotest.R
-import com.nguyen.tekotest.TekoTestApplication
 import com.nguyen.tekotest.data.remote.request.ListProductRequest
 import com.nguyen.tekotest.data.remote.response.Product
-import com.nguyen.tekotest.ui.subview.loading.LoadingDialog
+import com.nguyen.tekotest.ui.subview.LoadingDialog
+import com.nguyen.tekotest.ui.subview.loading.Snackbar
 import kotlinx.android.synthetic.main.fragment_list_product.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -36,13 +36,14 @@ class ListProductFragment: Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view= inflater.inflate(R.layout.fragment_list_product, container, false)
-        bindingData(view)
+        initView(view)
+        bindingData()
         getListProduct("")
         return view
     }
 
     //binding data
-    private fun bindingData(view: View) {
+    private fun initView(view: View) {
         arrayProduct = ArrayList<Product>()
         adapter = ListProductAdapter(arrayProduct)
         view.productRecyclerView.layoutManager = LinearLayoutManager(activity)
@@ -66,10 +67,23 @@ class ListProductFragment: Fragment() {
             PAGE_SIZE
         )
         LoadingDialog.getInstance(requireContext()).show()
-        viewModel.getListProduct(request).observe(viewLifecycleOwner, Observer {
-            this.arrayProduct.addAll(it)
-            this.adapter.notifyDataSetChanged()
+        viewModel.getListProduct(request)
+    }
+
+    ///binding data
+    private fun bindingData() {
+        viewModel.response.observe(viewLifecycleOwner, Observer {
             LoadingDialog.getInstance(requireContext()).dismiss()
+            val arrayProduct = it.result?.arrayProduct
+            val message = it.errorMsg
+            if(arrayProduct != null && arrayProduct.size > 0) {
+                this.arrayProduct.addAll(arrayProduct)
+                this.adapter.notifyDataSetChanged()
+            } else if(message != null) {
+                Snackbar.show(view, message, false)
+            } else {
+                Snackbar.show(view, getString(R.string.error_connect_network), false)
+            }
         })
     }
 }

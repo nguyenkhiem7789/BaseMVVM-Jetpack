@@ -54,6 +54,8 @@ ext {
 
     cardview_version = "1.0.0"
     recyclerview_version = "1.1.0"
+
+    snack_bar_version = "1.1.1"
 }
 
 dependencies {
@@ -100,6 +102,9 @@ dependencies {
     //Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    // Snack bar
+    implementation "com.androidadvance:topsnackbar:$snack_bar_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'

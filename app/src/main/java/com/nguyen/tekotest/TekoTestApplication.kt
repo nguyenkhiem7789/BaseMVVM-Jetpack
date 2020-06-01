@@ -4,7 +4,6 @@ import android.app.Application
 import com.nguyen.tekotest.ui.di.networkModule
 import com.nguyen.tekotest.ui.di.repositoryModule
 import com.nguyen.tekotest.ui.di.viewModelModule
-import com.nguyen.tekotest.ui.subview.loading.LoadingDialog
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
