@@ -1,5 +1,6 @@
 package com.nguyen.tekotest.utils
 
+// create singleton pattern with arguments
 open class SingletonHolder<out T: Any, in A>(creator: (A) -> T) {
     private var creator: ((A) -> T)? = creator
     @Volatile private var instance: T? = null

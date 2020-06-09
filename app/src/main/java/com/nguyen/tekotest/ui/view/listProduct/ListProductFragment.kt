@@ -6,16 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nguyen.tekotest.R
+import com.nguyen.tekotest.data.remote.network.NetworkState
 import com.nguyen.tekotest.data.remote.request.ListProductRequest
 import com.nguyen.tekotest.data.remote.response.Product
 import com.nguyen.tekotest.ui.subview.LoadingView
 import com.nguyen.tekotest.ui.subview.loading.SnackbarView
 import kotlinx.android.synthetic.main.fragment_list_product.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
-
 
 class ListProductFragment: Fragment() {
 
@@ -54,6 +55,7 @@ class ListProductFragment: Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
+
     }
 
     // request api get data list product
@@ -72,18 +74,26 @@ class ListProductFragment: Fragment() {
 
     ///binding data
     private fun bindingData() {
-        viewModel.response.observe(viewLifecycleOwner, Observer {
+        viewModel.arrayProductLiveData?.observe(viewLifecycleOwner, Observer {
             LoadingView.getInstance(requireContext()).dismiss()
-            val arrayProduct = it.result?.arrayProduct
-            val message = it.errorMsg
-            if(arrayProduct != null && arrayProduct.size > 0) {
-                this.arrayProduct.addAll(arrayProduct)
-                this.adapter.notifyDataSetChanged()
-            } else if(message != null) {
-                SnackbarView.show(view, message, false)
-            } else {
-                SnackbarView.show(view, getString(R.string.error_connect_network), false)
-            }
+            adapter.submitList(it)
+//            val arrayProduct = it.result?.arrayProduct
+//            val message = it.errorMsg
+//            if(arrayProduct != null && arrayProduct.size > 0) {
+//                this.arrayProduct.addAll(arrayProduct)
+//                this.adapter.notifyDataSetChanged()
+//            } else if(message != null) {
+//                SnackbarView.show(view, message, false)
+//            } else {
+//                SnackbarView.show(view, getString(R.string.error_connect_network), false)
+//            }
         })
+
+        viewModel.networkState?.observe(viewLifecycleOwner, Observer<NetworkState> {
+            adapter.setNetworkState(it)
+        })
+        adapter.notifyDataSetChanged()
     }
+
+
 }

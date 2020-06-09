@@ -7,7 +7,6 @@ import com.nguyen.tekotest.data.remote.response.ListProductResponse
 class ListProductRepository constructor(
     private val listProductService: ListProductService
 ) : BaseRepository() {
-
     suspend fun getListProduct(request: ListProductRequest) : ListProductResponse? {
         return safeApiCall(
         call = {

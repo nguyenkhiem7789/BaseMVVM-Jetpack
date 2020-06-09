@@ -1,11 +1,18 @@
 package com.nguyen.tekotest.ui.view.listProduct
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
+import com.nguyen.tekotest.data.datasource.ProductDataFactory
+import com.nguyen.tekotest.data.remote.network.NetworkState
 import com.nguyen.tekotest.data.remote.request.ListProductRequest
-import com.nguyen.tekotest.data.remote.response.ListProductResponse
+import com.nguyen.tekotest.data.remote.response.Product
 import com.nguyen.tekotest.data.repository.ListProductRepository
 import kotlinx.coroutines.*
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
 class ListProductViewModel(private val repository: ListProductRepository) : ViewModel() {
@@ -17,13 +24,27 @@ class ListProductViewModel(private val repository: ListProductRepository) : View
 
     private val scope = CoroutineScope(coroutineContext)
 
-    val response = MutableLiveData<ListProductResponse>()
+    private val executor: Executor by lazy {
+        Executors.newFixedThreadPool(5)
+    }
+
+    var networkState: LiveData<NetworkState>? = null
+
+    var arrayProductLiveData: LiveData<PagedList<Product>>? = null
 
     fun getListProduct(request: ListProductRequest) {
-        scope.launch {
-            val listProductResponse = repository.getListProduct(request)
-            response.postValue(listProductResponse)
+        val productDataFactory = ProductDataFactory(repository, scope, request)
+        networkState = Transformations.switchMap(productDataFactory.mutableLiveData) {
+            it.networkState
         }
+        val pagedListConfig = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(10)
+            .setPageSize(20)
+            .build()
+        arrayProductLiveData = LivePagedListBuilder(productDataFactory, pagedListConfig)
+            .setFetchExecutor(executor)
+            .build()
     }
 
     fun cancelAllRequests() = coroutineContext.cancel()
