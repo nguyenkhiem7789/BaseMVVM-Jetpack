@@ -16,8 +16,8 @@ interface ListProductService {
         @Query("visitorId") visitorId: String?,
         @Query("q") query: String?,
         @Query("terminal") terminal: String?,
-        @Query("_page") page: Int?,
-        @Query("_limit") limit: Int?
+        @Query("_page") page: Long,
+        @Query("_limit") limit: Int
     ): Deferred<Response<ListProductResponse>>
 
 }

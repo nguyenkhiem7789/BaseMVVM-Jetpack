@@ -7,6 +7,6 @@ data class ListProductRequest(
     @SerializedName("visitorId") val visitorId: String?,
     @SerializedName("q") val query: String?,
     @SerializedName("terminal") val terminal: String?,
-    @SerializedName("_page") val page: Int?,
-    @SerializedName("_limit") val limit: Int?
+    @SerializedName("_page") var page: Long,
+    @SerializedName("_limit") val limit: Int
 )

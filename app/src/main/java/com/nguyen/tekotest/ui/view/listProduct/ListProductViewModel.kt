@@ -1,6 +1,5 @@
 package com.nguyen.tekotest.ui.view.listProduct
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -12,7 +11,10 @@ import com.nguyen.tekotest.data.remote.network.NetworkState
 import com.nguyen.tekotest.data.remote.request.ListProductRequest
 import com.nguyen.tekotest.data.remote.response.Product
 import com.nguyen.tekotest.data.repository.ListProductRepository
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext

@@ -22,7 +22,7 @@ class ListProductFragment: Fragment() {
 
     private val viewModel: ListProductViewModel by viewModel()
 
-    private var currentPage = 1
+    private var currentPage = 1L
 
     private var PAGE_SIZE = 10
 
@@ -76,17 +76,8 @@ class ListProductFragment: Fragment() {
     private fun bindingData() {
         viewModel.arrayProductLiveData?.observe(viewLifecycleOwner, Observer {
             LoadingView.getInstance(requireContext()).dismiss()
+            this.currentPage += 1
             adapter.submitList(it)
-//            val arrayProduct = it.result?.arrayProduct
-//            val message = it.errorMsg
-//            if(arrayProduct != null && arrayProduct.size > 0) {
-//                this.arrayProduct.addAll(arrayProduct)
-//                this.adapter.notifyDataSetChanged()
-//            } else if(message != null) {
-//                SnackbarView.show(view, message, false)
-//            } else {
-//                SnackbarView.show(view, getString(R.string.error_connect_network), false)
-//            }
         })
 
         viewModel.networkState?.observe(viewLifecycleOwner, Observer<NetworkState> {
@@ -94,6 +85,4 @@ class ListProductFragment: Fragment() {
         })
         adapter.notifyDataSetChanged()
     }
-
-
 }

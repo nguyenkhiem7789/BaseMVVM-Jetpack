@@ -27,9 +27,9 @@ class ProductDataSource(
     override fun loadInitial(params: LoadInitialParams<Long>, callback: LoadInitialCallback<Long, Product>) {
         scope.launch {
             networkState.postValue(NetworkState.LOADING)
-            val listProductResponse = repository.getListProduct(request)
-            val arrayProduct = listProductResponse?.result?.arrayProduct
-            var message = listProductResponse?.errorMsg
+            val response = repository.getListProduct(request)
+            val arrayProduct = response?.result?.arrayProduct
+            var message = response?.errorMsg
             when {
                 arrayProduct != null -> {
                     callback.onResult(arrayProduct, null, 2)
@@ -46,19 +46,26 @@ class ProductDataSource(
     }
 
     override fun loadAfter(params: LoadParams<Long>, callback: LoadCallback<Long, Product>) {
+        Log.i(TAG, "Loading Rang " + params.key.toString() + " Count " + params.requestedLoadSize)
         scope.launch {
             networkState.postValue(NetworkState.LOADING)
-            val listProductResponse = repository.getListProduct(request)
-            val arrayProduct = listProductResponse?.result?.arrayProduct
-            var message = listProductResponse?.errorMsg
-            var page = listProductResponse?.result?.page
-            if(arrayProduct != null && page != null) {
-                callback.onResult(arrayProduct, page)
-                networkState.postValue(NetworkState.LOADED)
-            } else if(message != null) {
-                networkState.postValue(NetworkState(NetworkState.Status.FAILED, message))
-            } else {
-                networkState.postValue(NetworkState(NetworkState.Status.FAILED))
+            request.page = params.key
+
+            val response = repository.getListProduct(request)
+            val arrayProduct = response?.result?.arrayProduct
+            var message = response?.errorMsg
+            when {
+                arrayProduct != null -> {
+                    val nextKey = params.key + 1
+                    callback.onResult(arrayProduct, nextKey)
+                    networkState.postValue(NetworkState.LOADED)
+                }
+                message != null -> {
+                    networkState.postValue(NetworkState(NetworkState.Status.FAILED, message))
+                }
+                else -> {
+                    networkState.postValue(NetworkState(NetworkState.Status.FAILED))
+                }
             }
         }
     }
