@@ -29,19 +29,18 @@ class ProductDataSource(
             networkState.postValue(NetworkState.LOADING)
             val listProductResponse = repository.getListProduct(request)
             val arrayProduct = listProductResponse?.result?.arrayProduct
-            if(arrayProduct != null) {
-                Log.e("XarrayProduct", "=> 1")
-            } else {
-                Log.e("XarrayProduct", "=> 2")
-            }
             var message = listProductResponse?.errorMsg
-            if(arrayProduct != null) {
-                callback.onResult(arrayProduct, null, 2)
-                networkState.postValue(NetworkState.LOADED)
-            } else if(message != null) {
-                networkState.postValue(NetworkState(NetworkState.Status.FAILED, message))
-            } else {
-                networkState.postValue(NetworkState(NetworkState.Status.FAILED))
+            when {
+                arrayProduct != null -> {
+                    callback.onResult(arrayProduct, null, 2)
+                    networkState.postValue(NetworkState.LOADED)
+                }
+                message != null -> {
+                    networkState.postValue(NetworkState(NetworkState.Status.FAILED, message))
+                }
+                else -> {
+                    networkState.postValue(NetworkState(NetworkState.Status.FAILED))
+                }
             }
         }
     }

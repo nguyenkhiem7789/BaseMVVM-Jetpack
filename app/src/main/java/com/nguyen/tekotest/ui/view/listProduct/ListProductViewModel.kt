@@ -1,6 +1,8 @@
 package com.nguyen.tekotest.ui.view.listProduct
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
@@ -28,23 +30,27 @@ class ListProductViewModel(private val repository: ListProductRepository) : View
         Executors.newFixedThreadPool(5)
     }
 
+    var requestSearch = MutableLiveData<ListProductRequest>()
+
     var networkState: LiveData<NetworkState>? = null
 
     var arrayProductLiveData: LiveData<PagedList<Product>>? = null
 
-    fun getListProduct(request: ListProductRequest) {
-        val productDataFactory = ProductDataFactory(repository, scope, request)
-        networkState = Transformations.switchMap(productDataFactory.mutableLiveData) {
-            it.networkState
+    init {
+        arrayProductLiveData = Transformations.switchMap(requestSearch) {
+            val productDataFactory = ProductDataFactory(repository, scope, it)
+            networkState = Transformations.switchMap(productDataFactory.mutableLiveData) {
+                it.networkState
+            }
+            val pagedListConfig = PagedList.Config.Builder()
+                .setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(10)
+                .setPageSize(20)
+                .build()
+            return@switchMap LivePagedListBuilder(productDataFactory, pagedListConfig)
+                .setFetchExecutor(executor)
+                .build()
         }
-        val pagedListConfig = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(10)
-            .setPageSize(20)
-            .build()
-        arrayProductLiveData = LivePagedListBuilder(productDataFactory, pagedListConfig)
-            .setFetchExecutor(executor)
-            .build()
     }
 
     fun cancelAllRequests() = coroutineContext.cancel()

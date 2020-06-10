@@ -69,7 +69,7 @@ class ListProductFragment: Fragment() {
             PAGE_SIZE
         )
         LoadingView.getInstance(requireContext()).show()
-        viewModel.getListProduct(request)
+        viewModel.requestSearch.value = request
     }
 
     ///binding data

@@ -7,7 +7,6 @@ import com.nguyen.tekotest.data.remote.response.Product
 import com.nguyen.tekotest.data.repository.ListProductRepository
 import kotlinx.coroutines.CoroutineScope
 
-
 class ProductDataFactory(
     private val repository: ListProductRepository,
     private val scope: CoroutineScope,
@@ -18,7 +17,7 @@ class ProductDataFactory(
         MutableLiveData<ProductDataSource>()
     }
 
-    val productDataSource: ProductDataSource by lazy {
+    private val productDataSource: ProductDataSource by lazy {
         ProductDataSource(repository, scope, request)
     }
 
