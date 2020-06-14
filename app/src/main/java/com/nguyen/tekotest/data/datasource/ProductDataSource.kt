@@ -12,22 +12,27 @@ import kotlinx.coroutines.launch
 
 class ProductDataSource(
     private val repository: ListProductRepository,
-    private val scope: CoroutineScope,
-    private val request: ListProductRequest
+    private val scope: CoroutineScope
 ) : PageKeyedDataSource<Long, Product>() {
 
     companion object {
         private const val TAG = "ProductDataSource"
     }
 
+    var request: ListProductRequest? = null
+
     val networkState: MutableLiveData<NetworkState> by lazy {
         MutableLiveData<NetworkState>()
     }
 
     override fun loadInitial(params: LoadInitialParams<Long>, callback: LoadInitialCallback<Long, Product>) {
+        networkState.postValue(NetworkState.LOADING)
         scope.launch {
             networkState.postValue(NetworkState.LOADING)
-            val response = repository.getListProduct(request)
+            if(request == null) {
+                return@launch
+            }
+            val response = repository.getListProduct(request!!)
             val arrayProduct = response?.result?.arrayProduct
             var message = response?.errorMsg
             when {
@@ -47,11 +52,13 @@ class ProductDataSource(
 
     override fun loadAfter(params: LoadParams<Long>, callback: LoadCallback<Long, Product>) {
         Log.i(TAG, "Loading Rang " + params.key.toString() + " Count " + params.requestedLoadSize)
+        networkState.postValue(NetworkState.LOADING)
         scope.launch {
-            networkState.postValue(NetworkState.LOADING)
-            request.page = params.key
-
-            val response = repository.getListProduct(request)
+            if(request == null) {
+                return@launch
+            }
+            request!!.page = params.key
+            val response = repository.getListProduct(request!!)
             val arrayProduct = response?.result?.arrayProduct
             var message = response?.errorMsg
             when {

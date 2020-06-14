@@ -1,6 +1,7 @@
 package com.nguyen.tekotest.ui.view.listProduct
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,11 +31,7 @@ class ListProductFragment: Fragment() {
 
     private lateinit var arrayProduct: ArrayList<Product>
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view= inflater.inflate(R.layout.fragment_list_product, container, false)
         initView(view)
@@ -55,7 +52,6 @@ class ListProductFragment: Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-
     }
 
     // request api get data list product
@@ -70,6 +66,7 @@ class ListProductFragment: Fragment() {
         )
         LoadingView.getInstance(requireContext()).show()
         viewModel.requestSearch.value = request
+//        viewModel.loadData(request)
     }
 
     ///binding data
