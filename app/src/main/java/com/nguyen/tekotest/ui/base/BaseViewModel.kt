@@ -1,10 +1,8 @@
 package com.nguyen.tekotest.ui.base
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nguyen.tekotest.data.remote.network.NetworkState
-import com.nguyen.tekotest.data.remote.request.ListProductRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

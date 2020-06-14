@@ -66,7 +66,6 @@ class ListProductFragment: Fragment() {
         )
         LoadingView.getInstance(requireContext()).show()
         viewModel.requestSearch.value = request
-//        viewModel.loadData(request)
     }
 
     ///binding data

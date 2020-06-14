@@ -13,11 +13,11 @@ class ProductDataFactory(
     private val scope: CoroutineScope
 ) : DataSource.Factory<Long, Product>() {
 
+    var request: ListProductRequest? = null
+
     var mutableLiveData: MutableLiveData<ProductDataSource>? = null
 
     lateinit var productDataSource: ProductDataSource
-
-    var request: ListProductRequest? = null
 
     init {
         mutableLiveData = MutableLiveData<ProductDataSource>()
