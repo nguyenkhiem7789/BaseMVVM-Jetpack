@@ -12,7 +12,7 @@ import retrofit2.http.Query
 interface DetailProductService {
 
     @GET("products/{sku}")
-    fun getDetailProduct(
+    fun getDetailProductAsync(
 //        @Path("sku") productSku: String?,
         @Query("channel") channel: String?,
         @Query("terminal") terminal: String?

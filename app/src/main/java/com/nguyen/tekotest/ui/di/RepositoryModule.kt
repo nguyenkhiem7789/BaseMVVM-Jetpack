@@ -8,5 +8,5 @@ val repositoryModule = module {
 
     single { ListProductRepository(get()) }
 
-    single { DetailProductRepository() }
+    single { DetailProductRepository(get()) }
 }
