@@ -34,10 +34,10 @@ class DetailProductFragment: Fragment() {
 
     private fun getDetailData() {
         var request = DetailProductRequest(
-            "", ""
+            "AAA", "BBB"
         )
-        LoadingView.getInstance(requireContext()).show();
         viewModel.requestDetail.value = request
+        viewModel.getDetail()
     }
 
     private fun bindingData() {

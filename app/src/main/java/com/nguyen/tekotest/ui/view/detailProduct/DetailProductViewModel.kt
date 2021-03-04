@@ -6,6 +6,7 @@ import com.nguyen.tekotest.data.remote.request.DetailProductRequest
 import com.nguyen.tekotest.data.remote.response.Product
 import com.nguyen.tekotest.data.repository.DetailProductRepository
 import com.nguyen.tekotest.ui.base.BaseViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class DetailProductViewModel(private val repository: DetailProductRepository): BaseViewModel() {
@@ -15,9 +16,13 @@ class DetailProductViewModel(private val repository: DetailProductRepository): B
     var productLiveData: MutableLiveData<Product>? = null
 
     init {
+    }
+
+    fun getDetail() {
         scope.launch {
             Log.e("AAAAABBBBB", "--->call api get detail 1111")
-            productLiveData?.value = repository.getProductDetail(request = requestDetail.value!!)?.result?.product
+//            productLiveData?.value =
+            repository.getProductDetail(request = requestDetail.value!!)?.result?.product
         }
     }
 }
