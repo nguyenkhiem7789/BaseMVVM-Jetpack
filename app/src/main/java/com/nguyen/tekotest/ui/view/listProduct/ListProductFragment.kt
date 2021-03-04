@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nguyen.tekotest.R
@@ -44,6 +45,9 @@ class ListProductFragment: Fragment() {
     private fun initView(view: View) {
         arrayProduct = ArrayList<Product>()
         adapter = ListProductAdapter(arrayProduct)
+        adapter.listener = {
+            Navigation.findNavController(view).navigate(R.id.action_listProductFragment_to_detailProductFragment);
+        }
         view.productRecyclerView.layoutManager = LinearLayoutManager(activity)
         view.productRecyclerView.adapter = adapter
         view.productRecyclerView.addItemDecoration(
@@ -75,7 +79,6 @@ class ListProductFragment: Fragment() {
             this.currentPage += 1
             adapter.submitList(it)
         })
-
         viewModel.networkState?.observe(viewLifecycleOwner, Observer<NetworkState> {
             adapter.setNetworkState(it)
         })

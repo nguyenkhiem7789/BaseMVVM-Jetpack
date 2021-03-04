@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.item_list_product.view.*
 
 class ListProductAdapter(arrayProduct: ArrayList<Product>) : BaseAdapter<Product>() {
 
+    var listener: ((Product)->Unit)? = null
+
     companion object {
         private const val TYPE_ITEM = 1
     }
@@ -49,6 +51,9 @@ class ListProductAdapter(arrayProduct: ArrayList<Product>) : BaseAdapter<Product
             itemView.nameTextView.text = product.name
             itemView.finalPriceTextView.text = product.price?.sellPrice?.formatCurrency()
             itemView.totalPriceTextView.text = product.price?.supplierSalePrice?.formatCurrency()?.strikeThrough()
+            itemView.setOnClickListener {
+                listener?.invoke(product);
+            }
         }
     }
 }
