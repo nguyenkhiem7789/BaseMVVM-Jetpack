@@ -11,8 +11,6 @@ import com.nguyen.tekotest.R
 import com.nguyen.tekotest.data.remote.network.NetworkState
 import com.nguyen.tekotest.data.remote.request.DetailProductRequest
 import com.nguyen.tekotest.data.remote.response.Product
-import com.nguyen.tekotest.ui.subview.LoadingView
-import com.nguyen.tekotest.ui.view.listProduct.ListProductViewModel
 import kotlinx.android.synthetic.main.fragment_detail_product.*
 import kotlinx.android.synthetic.main.fragment_list_product.view.*
 import org.koin.android.viewmodel.ext.android.viewModel
