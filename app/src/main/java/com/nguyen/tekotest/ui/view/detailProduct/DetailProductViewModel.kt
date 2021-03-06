@@ -13,16 +13,17 @@ class DetailProductViewModel(private val repository: DetailProductRepository): B
 
     var requestDetail = MutableLiveData<DetailProductRequest>()
 
-    var productLiveData: MutableLiveData<Product>? = null
+    var productLiveData = MutableLiveData<Product>()
 
     init {
     }
 
     fun getDetail() {
         scope.launch {
-            Log.e("AAAAABBBBB", "--->call api get detail 1111")
-//            productLiveData?.value =
-            repository.getProductDetail(request = requestDetail.value!!)?.result?.product
+            if (requestDetail.value != null) {
+                var response = repository.getProductDetail(request = requestDetail.value!!)
+                productLiveData.postValue(response?.result?.product)
+            }
         }
     }
 }

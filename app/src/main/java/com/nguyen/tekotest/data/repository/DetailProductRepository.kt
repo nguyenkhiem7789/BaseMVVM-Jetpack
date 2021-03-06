@@ -12,8 +12,7 @@ class DetailProductRepository constructor(
     suspend fun getProductDetail(request: DetailProductRequest) : ProductDetailResponse? {
         return safeApiCall(
             call = {
-                Log.e("AAAAABBBBB", "--->call api get detail 2222")
-                detailProductService.getDetailProductAsync(request.channel,
+                detailProductService.getDetailProductAsync(request.sku, request.channel,
                     request.terminal).await()},
             errorMessage = "Error Fetching List Products")
     }

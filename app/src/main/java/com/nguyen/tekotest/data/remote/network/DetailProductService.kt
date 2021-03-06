@@ -13,7 +13,7 @@ interface DetailProductService {
 
     @GET("products/{sku}")
     fun getDetailProductAsync(
-//        @Path("sku") productSku: String?,
+        @Path("sku") productSku: String?,
         @Query("channel") channel: String?,
         @Query("terminal") terminal: String?
     ): Deferred<Response<ProductDetailResponse>>

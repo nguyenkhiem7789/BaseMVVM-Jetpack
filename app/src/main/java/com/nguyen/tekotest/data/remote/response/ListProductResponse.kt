@@ -21,7 +21,8 @@ data class Product (
     @SerializedName("sku") override var id: String,
     @SerializedName("name") val name: String? = null,
     @SerializedName("price") val price: ProductPrice? = null,
-    @SerializedName("images") val arrayImage: ArrayList<ProductImage>? = null
+    @SerializedName("images") val arrayImage: ArrayList<ProductImage>? = null,
+    @SerializedName("promotionPrices") val arrayPromotionPrice: ArrayList<PromotionPrice>? = null
 ) : GenericInterface(), Parcelable {
     @Parcelize
     data class ProductPrice (
@@ -33,4 +34,10 @@ data class Product (
     data class ProductImage(
         @SerializedName("url") val url: String? = null
     ) : Parcelable
+
+    @Parcelize
+    data class PromotionPrice (
+        @SerializedName("channel") val channel: String? = null,
+        @SerializedName("terminal") val terminal: String? = null
+    ): Parcelable
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nguyen.tekotest.R
@@ -34,11 +35,18 @@ class ListProductFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+        Log.e("ListProductFragment", "> onCreateView")
         val view= inflater.inflate(R.layout.fragment_list_product, container, false)
         initView(view)
         bindingData()
+        this.currentPage = 1
         getListProduct("")
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.e("ListProductFragment", "> onDestroyView")
     }
 
     //binding data
@@ -46,7 +54,8 @@ class ListProductFragment: Fragment() {
         arrayProduct = ArrayList<Product>()
         adapter = ListProductAdapter(arrayProduct)
         adapter.listener = {
-            Navigation.findNavController(view).navigate(R.id.action_listProductFragment_to_detailProductFragment);
+            val action = ListProductFragmentDirections.actionListProductFragmentToDetailProductFragment(it)
+            Navigation.findNavController(view).navigate(action)
         }
         view.productRecyclerView.layoutManager = LinearLayoutManager(activity)
         view.productRecyclerView.adapter = adapter
